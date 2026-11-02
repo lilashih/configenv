@@ -1,4 +1,3 @@
-// Package configenv 提供明確、可測試且不修改程序環境的設定載入功能。
 // Package configenv loads application settings explicitly and testably without modifying the process environment.
 package configenv
 
@@ -17,20 +16,17 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// Result 回報本次實際讀取的設定檔；空字串表示沒有讀取檔案。
 // Result reports the .env file used; an empty EnvFile means no file was read.
 type Result struct {
 	EnvFile string
 }
 
-// Load 將設定載入呼叫端提供的 struct 指標。
 // Load populates the struct pointer provided by the caller.
 func Load(target any) error {
 	_, err := LoadWithResult(target)
 	return err
 }
 
-// LoadWithResult 載入設定，並回報所採用的設定檔路徑。
 // LoadWithResult populates settings and reports the .env file path used.
 func LoadWithResult(target any) (Result, error) {
 	var result Result
