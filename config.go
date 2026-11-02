@@ -141,11 +141,9 @@ func readFirstEnvFile(paths []string) (map[string]string, string, error) {
 func processEnvironment() map[string]string {
 	variables := make(map[string]string)
 	for _, entry := range os.Environ() {
-		for i := 0; i < len(entry); i++ {
-			if entry[i] == '=' {
-				variables[entry[:i]] = entry[i+1:]
-				break
-			}
+		key, value, ok := strings.Cut(entry, "=")
+		if ok && key != "" {
+			variables[key] = value
 		}
 	}
 	return variables

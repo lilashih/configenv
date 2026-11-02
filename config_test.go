@@ -114,6 +114,25 @@ func TestLoadEmbeddedSettings(t *testing.T) {
 	}
 }
 
+func TestLoadNamedNestedSettings(t *testing.T) {
+	type database struct {
+		Main struct {
+			Path string `env:"CONFIG_TEST_DB_PATH" envDefault:"./database.sqlite"`
+		}
+	}
+	type settings struct {
+		DB database
+	}
+	workingDir(t)
+	var got settings
+	if err := Load(&got); err != nil {
+		t.Fatal(err)
+	}
+	if got.DB.Main.Path != "./database.sqlite" {
+		t.Fatalf("nested default was not loaded: %+v", got)
+	}
+}
+
 func TestLoadUnreadableCandidateDoesNotBecomeMissing(t *testing.T) {
 	dir := workingDir(t)
 	if err := os.Mkdir(filepath.Join(dir, ".env"), 0700); err != nil {
